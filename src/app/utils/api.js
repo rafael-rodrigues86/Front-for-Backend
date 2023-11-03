@@ -38,4 +38,43 @@ const createMovie = async (data) => {
   }
 };
 
-export { fetchMovies, searchMovies, createMovie };
+const deleteMovie = async (id) => {
+  try {
+    const response = await fetch(`http://localhost:3000/movies/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      throw new Error("Falha ao deletar o filme.");
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Erro ao deletar o filme: ", error);
+    return false;
+  }
+};
+
+const changeMovieData = async (id, data) => {
+  try {
+    const response = await fetch(`http://localhost:3000/movies/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error("Falha ao atualizar o filme.");
+    }
+
+    const updatedMovie = await response.json();
+    return updatedMovie;
+  } catch (error) {
+    console.error("Erro ao atualizar o filme: ", error);
+    return false;
+  }
+};
+
+export { fetchMovies, searchMovies, createMovie, deleteMovie, changeMovieData };
